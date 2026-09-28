@@ -23,7 +23,10 @@ const Navbar = () => {
             <ShoppingCart className="h-8 w-8 text-blue-600" />
             <span className="font-bold text-2xl tracking-tight text-gray-900">ShopKart</span>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-6">
+            <Link to="/products" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+              Products
+            </Link>
             <button
               onClick={handleLogout}
               className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 bg-gray-50 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all duration-200"

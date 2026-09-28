@@ -39,7 +39,7 @@ const Register = () => {
     try {
       const response = await api.post('/customers/register', formData);
       if (response.data.success) {
-        navigate('/login');
+        navigate('/products');
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Something went wrong during registration');

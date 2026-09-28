@@ -33,6 +33,13 @@ const registerCustomer = async (req, res) => {
     });
 
     if (customer) {
+      const token = generateToken(customer._id);
+      res.cookie('jwt', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== 'development',
+        sameSite: 'strict',
+      });
+
       res.status(201).json({
         success: true,
         message: 'Customer registered successfully',

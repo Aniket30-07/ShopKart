@@ -4,13 +4,14 @@ const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const customerRoutes = require('./routes/customer.routes');
+const productRoutes = require('./routes/product.routes');
 
 dotenv.config();
 
 const app = express();
 
 // Middlewares
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(cors({ origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -19,6 +20,7 @@ app.get('/', (req, res) => {
   res.send('server started');
 });
 app.use('/customers', customerRoutes);
+app.use('/products', productRoutes);
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI)
