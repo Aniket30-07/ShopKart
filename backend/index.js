@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const customerRoutes = require('./routes/customer.routes');
 const productRoutes = require('./routes/product.routes');
+const wishlistRoutes = require('./routes/wishlist.routes');
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
 });
 app.use('/customers', customerRoutes);
 app.use('/products', productRoutes);
+app.use('/wishlist', wishlistRoutes);
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI)

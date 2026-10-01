@@ -15,4 +15,14 @@ export const getProductById = async (id) => {
   return response.data;
 };
 
+export const getWishlist = async () => {
+  const response = await api.get('/wishlist');
+  return response.data;
+};
+
+export const toggleWishlist = async (productId) => {
+  const response = await api.patch(`/wishlist/${productId}/toggle`);
+  return response.data;
+};
+
 export default api;

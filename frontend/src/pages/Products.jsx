@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import SearchBar from '../components/SearchBar';
 import ProductCard from '../components/ProductCard';
-import { getProducts } from '../services/api';
+import api, { getProducts } from '../services/api';
 import { PackageX, AlertCircle } from 'lucide-react';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const [wishlistIds, setWishlistIds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
@@ -37,9 +38,16 @@ const Products = () => {
         if (category && category !== 'All Categories') params.category = category;
         if (sort) params.sort = sort;
 
-        const data = await getProducts(params);
+        const [data, wishlistData] = await Promise.all([
+          getProducts(params),
+          api.get('/wishlist').then(res => res.data).catch(() => ({ success: false, wishlist: [] }))
+        ]);
+
         if (data.success) {
           setProducts(data.products);
+          if (wishlistData.success) {
+            setWishlistIds(wishlistData.wishlist.map(w => typeof w === 'object' ? w._id : w));
+          }
         } else {
           setError('Failed to fetch products');
         }
@@ -120,7 +128,11 @@ const Products = () => {
         {!loading && !error && products.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {products.map(product => (
-              <ProductCard key={product._id} product={product} />
+              <ProductCard 
+                key={product._id} 
+                product={product} 
+                initialIsSaved={wishlistIds.includes(product._id)} 
+              />
             ))}
           </div>
         )}

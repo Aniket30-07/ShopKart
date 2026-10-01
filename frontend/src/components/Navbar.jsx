@@ -1,10 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, LogOut } from 'lucide-react';
-import api from '../services/api';
+import { ShoppingCart, LogOut, Heart } from 'lucide-react';
+import api, { getWishlist } from '../services/api';
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const [wishlistCount, setWishlistCount] = useState(0);
+
+  const fetchWishlistCount = async () => {
+    try {
+      const data = await getWishlist();
+      if (data.success) {
+        setWishlistCount(data.count);
+      }
+    } catch (error) {
+      console.error('Failed to fetch wishlist count:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchWishlistCount();
+
+    const handleWishlistChange = () => {
+      fetchWishlistCount();
+    };
+
+    window.addEventListener('wishlistChanged', handleWishlistChange);
+    return () => window.removeEventListener('wishlistChanged', handleWishlistChange);
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -26,6 +49,10 @@ const Navbar = () => {
           <div className="flex items-center space-x-6">
             <Link to="/products" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
               Products
+            </Link>
+            <Link to="/wishlist" className="flex items-center gap-1 text-gray-600 hover:text-red-600 font-medium transition-colors">
+              <Heart className="h-5 w-5" />
+              <span>Wishlist {wishlistCount > 0 && `(${wishlistCount})`}</span>
             </Link>
             <button
               onClick={handleLogout}

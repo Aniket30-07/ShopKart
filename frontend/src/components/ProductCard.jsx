@@ -1,9 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Package, IndianRupee } from 'lucide-react';
+import { Package, IndianRupee, Heart } from 'lucide-react';
+import { toggleWishlist } from '../services/api';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, initialIsSaved = false }) => {
   const navigate = useNavigate();
+  const [isSaved, setIsSaved] = useState(initialIsSaved);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Keep in sync if initialIsSaved changes
+  useEffect(() => {
+    setIsSaved(initialIsSaved);
+  }, [initialIsSaved]);
+
+  const handleToggleWishlist = async (e) => {
+    e.stopPropagation();
+    if (isLoading) return;
+    
+    setIsLoading(true);
+    setError(null);
+    try {
+      const data = await toggleWishlist(product._id);
+      if (data.success) {
+        setIsSaved(data.saved);
+        window.dispatchEvent(new Event('wishlistChanged'));
+      } else {
+        setError('Failed to save');
+      }
+    } catch (err) {
+      setError('Failed to save');
+    } finally {
+      setIsLoading(false);
+      // Clear error after 3 seconds
+      setTimeout(() => setError(null), 3000);
+    }
+  };
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group">
@@ -43,6 +75,27 @@ const ProductCard = ({ product }) => {
           {product.name}
         </h3>
         
+        <div className="flex flex-col gap-2 mt-2">
+          {error && <span className="text-xs text-red-500 text-center">{error}</span>}
+          <button
+            onClick={handleToggleWishlist}
+            disabled={isLoading}
+            className={`w-full py-2 px-4 rounded-xl font-medium text-sm border flex items-center justify-center gap-2 transition-colors ${
+              isSaved 
+                ? 'bg-red-50 text-red-600 border-red-200 hover:bg-red-100' 
+                : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
+            }`}
+          >
+            {isLoading ? (
+              <span className="flex items-center gap-2">⏳ Saving...</span>
+            ) : isSaved ? (
+              <span className="flex items-center gap-2">♥ Remove from Wishlist</span>
+            ) : (
+              <span className="flex items-center gap-2">♡ Add to Wishlist</span>
+            )}
+          </button>
+        </div>
+
         <div className="mt-auto pt-4 flex items-center justify-between border-t border-gray-50">
           <div className="flex items-center text-2xl font-bold text-gray-900">
             <span className="text-sm text-gray-500 font-normal mr-1">₹</span>
