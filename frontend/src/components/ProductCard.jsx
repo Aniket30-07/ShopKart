@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Package, IndianRupee, Heart } from 'lucide-react';
+import { Package, IndianRupee, Heart, ShoppingCart } from 'lucide-react';
 import { toggleWishlist } from '../services/api';
+import { useCart } from '../context/CartContext';
 
 const ProductCard = ({ product, initialIsSaved = false }) => {
   const navigate = useNavigate();
   const [isSaved, setIsSaved] = useState(initialIsSaved);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAddingCart, setIsAddingCart] = useState(false);
   const [error, setError] = useState(null);
+  const { cartItems, addToCart } = useCart();
+  
+  const inCart = cartItems.find(item => item.product._id === product._id);
 
   // Keep in sync if initialIsSaved changes
   useEffect(() => {
@@ -34,6 +39,20 @@ const ProductCard = ({ product, initialIsSaved = false }) => {
       setIsLoading(false);
       // Clear error after 3 seconds
       setTimeout(() => setError(null), 3000);
+    }
+  };
+
+  const handleAddToCart = async (e) => {
+    e.stopPropagation();
+    if (isAddingCart) return;
+    setIsAddingCart(true);
+    try {
+      await addToCart(product._id);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to add to cart');
+      setTimeout(() => setError(null), 3000);
+    } finally {
+      setIsAddingCart(false);
     }
   };
 
@@ -92,6 +111,23 @@ const ProductCard = ({ product, initialIsSaved = false }) => {
               <span className="flex items-center gap-2">♥ Remove from Wishlist</span>
             ) : (
               <span className="flex items-center gap-2">♡ Add to Wishlist</span>
+            )}
+          </button>
+          
+          <button
+            onClick={handleAddToCart}
+            disabled={isAddingCart || product.stock === 0}
+            className={`w-full py-2 px-4 rounded-xl font-medium text-sm border flex items-center justify-center gap-2 transition-colors ${
+              product.stock === 0 ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed' :
+              inCart ? 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100' : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700'
+            }`}
+          >
+            {isAddingCart ? (
+              <span className="flex items-center gap-2">⏳ Adding...</span>
+            ) : inCart ? (
+              <span className="flex items-center gap-2"><ShoppingCart className="h-4 w-4" /> Add Another</span>
+            ) : (
+              <span className="flex items-center gap-2"><ShoppingCart className="h-4 w-4" /> Add to Cart</span>
             )}
           </button>
         </div>

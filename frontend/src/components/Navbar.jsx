@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, LogOut, Heart } from 'lucide-react';
 import api, { getWishlist } from '../services/api';
+import { useCart } from '../context/CartContext';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [wishlistCount, setWishlistCount] = useState(0);
+  const { totalItems } = useCart();
 
   const fetchWishlistCount = async () => {
     try {
@@ -53,6 +55,10 @@ const Navbar = () => {
             <Link to="/wishlist" className="flex items-center gap-1 text-gray-600 hover:text-red-600 font-medium transition-colors">
               <Heart className="h-5 w-5" />
               <span>Wishlist {wishlistCount > 0 && `(${wishlistCount})`}</span>
+            </Link>
+            <Link to="/cart" className="flex items-center gap-1 text-gray-600 hover:text-blue-600 font-medium transition-colors">
+              <ShoppingCart className="h-5 w-5" />
+              <span>Cart {totalItems > 0 && `(${totalItems})`}</span>
             </Link>
             <button
               onClick={handleLogout}
