@@ -69,7 +69,10 @@ const Cart = () => {
                   <div className="flex justify-between items-start">
                     <div>
                       <h3 className="font-semibold text-lg text-gray-900 line-clamp-1">{item.product.name}</h3>
-                      <p className="text-sm text-gray-500">{item.product.category}</p>
+                      <p className="text-sm text-gray-500 mb-1">{item.product.category}</p>
+                      <p className={`text-xs font-medium ${item.product.stock <= 5 ? 'text-orange-600' : 'text-green-600'}`}>
+                        {item.product.stock} in stock
+                      </p>
                     </div>
                     <div className="text-right flex flex-col items-end">
                       <p className="font-bold text-lg text-gray-900">₹{(item.product.price * item.quantity).toLocaleString('en-IN')}</p>
