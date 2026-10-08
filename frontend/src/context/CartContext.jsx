@@ -70,6 +70,10 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const subtotal = cartItems.reduce((acc, item) => acc + ((item.product?.price || 0) * item.quantity), 0);
 
@@ -82,6 +86,7 @@ export const CartProvider = ({ children }) => {
       addToCart,
       updateQuantity,
       removeFromCart,
+      clearCart,
       totalItems,
       subtotal
     }}>

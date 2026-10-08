@@ -45,4 +45,24 @@ export const removeFromCart = async (productId) => {
   return response.data;
 };
 
+export const createPaymentOrder = async (shippingAddress) => {
+  const response = await api.post('/orders/create-payment-order', { shippingAddress });
+  return response.data;
+};
+
+export const verifyPayment = async (paymentData) => {
+  const response = await api.post('/orders/verify-payment', paymentData);
+  return response.data;
+};
+
+export const getOrders = async () => {
+  const response = await api.get('/orders');
+  return response.data;
+};
+
+export const getOrder = async (id) => {
+  const response = await api.get(`/orders/${id}`);
+  return response.data;
+};
+
 export default api;
