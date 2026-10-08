@@ -5,6 +5,19 @@ const api = axios.create({
   withCredentials: true, // This is crucial for sending and receiving HttpOnly cookies
 });
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // Avoid redirecting if the 401 came from a login attempt itself
+      if (error.config && !error.config.url.includes('/customers/login')) {
+        window.location.href = '/login';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 export const getProducts = async (params) => {
   const response = await api.get('/products', { params });
   return response.data;
