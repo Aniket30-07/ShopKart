@@ -8,16 +8,6 @@ const api = axios.create({
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
-      // Avoid redirecting if the 401 came from a login attempt or initial auth check
-      if (
-        error.config && 
-        !error.config.url.includes('/customers/login') &&
-        !error.config.url.includes('/customers/me')
-      ) {
-        window.location.href = '/login';
-      }
-    }
     return Promise.reject(error);
   }
 );
