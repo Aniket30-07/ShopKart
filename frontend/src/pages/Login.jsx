@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { ShoppingCart, Mail, Lock, AlertCircle } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,6 +18,8 @@ const Login = () => {
     setError('');
   };
 
+  const { checkAuth } = useAuth();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -31,6 +34,7 @@ const Login = () => {
     try {
       const response = await api.post('/customers/login', formData);
       if (response.data.success) {
+        await checkAuth(); // Refresh user state
         navigate('/home');
       }
     } catch (err) {

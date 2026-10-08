@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { ShoppingCart, User, Mail, Lock, Phone, AlertCircle } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -18,6 +19,8 @@ const Register = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setError('');
   };
+
+  const { checkAuth } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,6 +42,7 @@ const Register = () => {
     try {
       const response = await api.post('/customers/register', formData);
       if (response.data.success) {
+        await checkAuth(); // Refresh user state
         navigate('/products');
       }
     } catch (err) {

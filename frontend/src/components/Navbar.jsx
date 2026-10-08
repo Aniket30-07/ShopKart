@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, LogOut, Heart } from 'lucide-react';
 import api, { getWishlist } from '../services/api';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -31,13 +32,11 @@ const Navbar = () => {
     return () => window.removeEventListener('wishlistChanged', handleWishlistChange);
   }, []);
 
+  const { logout, user } = useAuth();
+
   const handleLogout = async () => {
-    try {
-      await api.post('/customers/logout');
-      navigate('/login');
-    } catch (error) {
-      console.error('Logout failed:', error);
-    }
+    await logout();
+    navigate('/login');
   };
 
   return (
