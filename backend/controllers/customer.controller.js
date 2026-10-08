@@ -37,7 +37,7 @@ const registerCustomer = async (req, res) => {
       res.cookie('jwt', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV !== 'development',
-        sameSite: 'strict',
+        sameSite: process.env.NODE_ENV === 'development' ? 'strict' : 'none',
       });
 
       res.status(201).json({
@@ -73,7 +73,7 @@ const loginCustomer = async (req, res) => {
       res.cookie('jwt', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV !== 'development', // Use secure cookies in production
-        sameSite: 'strict', // Prevent CSRF attacks
+        sameSite: process.env.NODE_ENV === 'development' ? 'strict' : 'none', // Prevent CSRF in dev, allow cross-origin in prod
         //maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
       });
 
@@ -95,7 +95,9 @@ const loginCustomer = async (req, res) => {
 const logoutCustomer = (req, res) => {
   res.cookie('jwt', '', {
     httpOnly: true,
-    expires: new Date(0)
+    expires: new Date(0),
+    secure: process.env.NODE_ENV !== 'development',
+    sameSite: process.env.NODE_ENV === 'development' ? 'strict' : 'none',
   });
 
   res.status(200).json({ success: true, message: 'Logged out successfully' });
