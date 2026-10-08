@@ -63,18 +63,13 @@ const Products = () => {
   }, [debouncedSearch, category, sort]);
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
+    <div className="min-h-screen bg-brand-cream-light font-sans relative">
       <Navbar />
       
-      <main className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="mb-10 text-center md:text-left">
-          <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">
-            Discover Products
-          </h1>
-          <p className="mt-4 text-lg text-gray-500 max-w-2xl">
-            Find everything you need, from everyday essentials to extraordinary finds.
-          </p>
-        </div>
+      {/* Background ambient gradient */}
+      <div className="absolute top-0 left-0 w-full h-[300px] bg-gradient-to-b from-brand-cream to-transparent pointer-events-none -z-10"></div>
+
+      <main className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 mt-20">
 
         <SearchBar 
           search={search} 
@@ -88,28 +83,28 @@ const Products = () => {
         {/* State Handling */}
         {loading && (
           <div className="py-20 flex flex-col items-center justify-center">
-             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-             <p className="text-gray-500 font-medium animate-pulse">Loading products...</p>
+             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-green mb-4"></div>
+             <p className="text-brand-green/70 font-medium animate-pulse">Loading products...</p>
           </div>
         )}
 
         {!loading && error && (
-          <div className="bg-red-50 border border-red-200 rounded-2xl p-8 flex flex-col items-center justify-center text-center">
+          <div className="bg-red-50 border border-red-100 rounded-[2rem] p-10 flex flex-col items-center justify-center text-center">
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
               <AlertCircle className="w-8 h-8 text-red-500" />
             </div>
-            <h3 className="text-lg font-semibold text-red-800 mb-2">Error</h3>
-            <p className="text-red-600">{error}</p>
+            <h3 className="text-xl font-serif font-semibold text-red-800 mb-2">Error Loading Products</h3>
+            <p className="text-red-600 text-sm mb-6">{error}</p>
           </div>
         )}
 
         {!loading && !error && products.length === 0 && (
-          <div className="bg-white border border-gray-100 shadow-sm rounded-2xl p-16 flex flex-col items-center justify-center text-center">
-             <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6">
-                <PackageX className="w-10 h-10 text-gray-400" />
+          <div className="bg-white border border-[#e6e2d6] shadow-[0_4px_20px_rgba(0,0,0,0.02)] rounded-[2rem] p-16 flex flex-col items-center justify-center text-center">
+             <div className="w-24 h-24 bg-brand-cream rounded-full flex items-center justify-center mb-6">
+                <PackageX className="w-10 h-10 text-brand-green/40" />
              </div>
-             <h3 className="text-2xl font-bold text-gray-900 mb-2">No products found.</h3>
-             <p className="text-gray-500 max-w-md mx-auto">
+             <h3 className="text-3xl font-serif font-bold text-brand-green-dark mb-3">No products found</h3>
+             <p className="text-brand-green/60 max-w-md mx-auto mb-8 text-[15px]">
                We couldn't find any products matching your current filters. Try adjusting your search or category.
              </p>
              <button 
@@ -118,7 +113,7 @@ const Products = () => {
                   setCategory('All Categories');
                   setSort('');
                 }}
-                className="mt-8 px-6 py-3 bg-blue-50 text-blue-700 font-semibold rounded-xl hover:bg-blue-100 transition-colors"
+                className="px-8 py-3 bg-brand-green/10 text-brand-green font-semibold rounded-xl hover:bg-brand-green hover:text-white transition-all uppercase tracking-widest text-[11px]"
               >
                 Clear all filters
              </button>
@@ -126,7 +121,7 @@ const Products = () => {
         )}
 
         {!loading && !error && products.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {products.map(product => (
               <ProductCard 
                 key={product._id} 

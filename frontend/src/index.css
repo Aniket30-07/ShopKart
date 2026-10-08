@@ -1,7 +1,17 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand-green: #244d3f;
+  --color-brand-green-dark: #1a382e;
+  --color-brand-cream: #f8f6f0;
+  --color-brand-cream-light: #fdfcf9;
+  
+  --font-sans: "DM Sans", sans-serif;
+  --font-serif: "Playfair Display", serif;
+}
+
 @layer base {
   body {
-    @apply antialiased text-gray-900 bg-gray-50;
+    @apply antialiased text-gray-900 bg-brand-cream-light font-sans;
   }
 }

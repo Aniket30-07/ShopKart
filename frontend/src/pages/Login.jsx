@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import { ShoppingCart, Mail, Lock, AlertCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import Navbar from '../components/Navbar';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -45,99 +46,78 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="flex justify-center">
-          <div className="bg-blue-600 p-3 rounded-xl shadow-lg">
-            <ShoppingCart className="w-10 h-10 text-white" />
+    <div className="min-h-screen bg-brand-cream-light flex flex-col font-sans relative">
+      <Navbar />
+      
+      <div className="flex-1 flex flex-col justify-center items-center py-12 px-4 sm:px-6 lg:px-8 mt-16">
+        <div className="w-full max-w-[420px] bg-gradient-to-b from-[#f9f7f1] to-[#f4f1e8] rounded-[2rem] p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#e6e2d6] relative overflow-hidden">
+          
+          {/* Subtle background decoration */}
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-green/10 via-brand-green/30 to-brand-green/10"></div>
+          
+          <div className="text-center mb-10 mt-2">
+            <h2 className="text-[2.75rem] leading-tight text-brand-green-dark mb-3 flex flex-col items-center justify-center">
+              <span className="font-serif font-bold tracking-tight">Welcome</span>
+              <span className="font-serif italic font-medium -mt-2">Back</span>
+            </h2>
+            <p className="text-[13px] text-brand-green/60 tracking-wide font-medium">
+              Please enter your details to sign in
+            </p>
           </div>
-        </div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign in to your account
-        </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Or{' '}
-          <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
-            create a new account
-          </Link>
-        </p>
-      </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-2xl sm:px-10 border border-gray-100">
           <form className="space-y-6" onSubmit={handleSubmit}>
             {error && (
-              <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-md flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-red-500 mt-0.5" />
-                <p className="text-sm text-red-700">{error}</p>
+              <div className="bg-red-50/80 border border-red-200 p-4 rounded-xl flex items-start gap-3 backdrop-blur-sm">
+                <AlertCircle className="w-5 h-5 text-red-500 mt-0.5 shrink-0" />
+                <p className="text-[13px] text-red-700 font-medium">{error}</p>
               </div>
             )}
 
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label>
-              <div className="mt-1 relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                  <Mail className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all"
-                  placeholder="you@example.com"
-                />
-              </div>
+            <div className="space-y-2">
+              <label htmlFor="email" className="block text-[10px] font-bold text-brand-green tracking-[0.2em] uppercase ml-1">
+                Email Address
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="block w-full px-5 py-4 bg-white/70 border border-[#e6e2d6] rounded-xl focus:ring-1 focus:ring-brand-green focus:border-brand-green focus:bg-white text-[15px] transition-all placeholder:text-gray-400 outline-none"
+                placeholder="you@example.com"
+              />
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-              <div className="mt-1 relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                  <Lock className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all"
-                  placeholder="••••••••"
-                />
-              </div>
+            <div className="space-y-2">
+              <label htmlFor="password" className="block text-[10px] font-bold text-brand-green tracking-[0.2em] uppercase ml-1">
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="block w-full px-5 py-4 bg-white/70 border border-[#e6e2d6] rounded-xl focus:ring-1 focus:ring-brand-green focus:border-brand-green focus:bg-white text-[15px] transition-all placeholder:text-gray-400 outline-none"
+                placeholder="••••••••"
+              />
             </div>
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                  Remember me
-                </label>
-              </div>
-              <div className="text-sm">
-                <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
-                  Forgot your password?
-                </a>
-              </div>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all disabled:opacity-70"
-              >
-                {loading ? 'Signing in...' : 'Sign in'}
-              </button>
-            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full flex justify-center py-4 px-4 border border-transparent rounded-xl shadow-sm text-[15px] font-semibold text-white bg-brand-green hover:bg-brand-green-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-green focus:ring-offset-[#f4f1e8] transition-all disabled:opacity-70 mt-10 active:scale-[0.98]"
+            >
+              {loading ? 'Signing in...' : 'Sign in'}
+            </button>
           </form>
+
+          <p className="mt-10 text-center text-[13px] text-brand-green/70">
+            Don't have an account?{' '}
+            <Link to="/register" className="font-bold text-brand-green hover:text-brand-green-dark underline underline-offset-[5px] decoration-2 decoration-brand-green/30 hover:decoration-brand-green transition-all">
+              Sign up now
+            </Link>
+          </p>
         </div>
       </div>
     </div>

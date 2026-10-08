@@ -57,32 +57,31 @@ const ProductCard = ({ product, initialIsSaved = false }) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group">
-      <div className="relative h-64 overflow-hidden bg-gray-50 flex items-center justify-center p-4">
-        {/* Using a placeholder aesthetic in case image is missing or invalid, though it's required */}
+    <div className="bg-white rounded-[1.5rem] shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-[#e6e2d6] overflow-hidden flex flex-col transition-all duration-300 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 group">
+      <div className="relative h-64 overflow-hidden bg-[#f9f7f1] flex items-center justify-center p-4">
         <img 
           src={product.image} 
           alt={product.name}
-          className="object-contain w-full h-full transition-transform duration-500 group-hover:scale-105"
+          className="object-contain w-full h-full transition-transform duration-700 group-hover:scale-105"
           onError={(e) => {
-            e.target.src = 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80'; // Fallback aesthetic image
+            e.target.src = 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80';
           }}
         />
         <div className="absolute top-4 left-4">
-          <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-xs font-semibold text-gray-700 rounded-full shadow-sm">
+          <span className="px-4 py-1.5 bg-white/90 backdrop-blur-md text-[10px] font-bold text-brand-green tracking-widest uppercase rounded-full shadow-sm border border-[#e6e2d6]/50">
             {product.category}
           </span>
         </div>
         {product.stock <= 5 && product.stock > 0 && (
           <div className="absolute top-4 right-4">
-             <span className="px-3 py-1 bg-orange-100/90 backdrop-blur-sm text-xs font-semibold text-orange-700 rounded-full shadow-sm border border-orange-200">
-               Only {product.stock} left!
+             <span className="px-3 py-1.5 bg-[#fdfcf9]/90 backdrop-blur-md text-[10px] font-bold text-[#c4923e] tracking-widest uppercase rounded-full shadow-sm border border-[#e6e2d6]/50">
+               Only {product.stock} left
              </span>
           </div>
         )}
         {product.stock === 0 && (
            <div className="absolute top-4 right-4">
-             <span className="px-3 py-1 bg-red-100/90 backdrop-blur-sm text-xs font-semibold text-red-700 rounded-full shadow-sm border border-red-200">
+             <span className="px-3 py-1.5 bg-red-50/90 backdrop-blur-md text-[10px] font-bold text-red-700 tracking-widest uppercase rounded-full shadow-sm border border-red-100">
                Out of Stock
              </span>
           </div>
@@ -90,59 +89,59 @@ const ProductCard = ({ product, initialIsSaved = false }) => {
       </div>
       
       <div className="p-6 flex flex-col flex-grow">
-        <h3 className="text-xl font-semibold text-gray-900 line-clamp-1 mb-2 group-hover:text-blue-600 transition-colors">
+        <h3 className="text-xl font-serif font-semibold text-brand-green-dark line-clamp-1 mb-2 group-hover:text-brand-green transition-colors">
           {product.name}
         </h3>
         
         <div className="flex flex-col gap-2 mt-2">
-          {error && <span className="text-xs text-red-500 text-center">{error}</span>}
+          {error && <span className="text-xs text-red-500 text-center font-medium">{error}</span>}
           <button
             onClick={handleToggleWishlist}
             disabled={isLoading}
-            className={`w-full py-2 px-4 rounded-xl font-medium text-sm border flex items-center justify-center gap-2 transition-colors ${
+            className={`w-full py-2.5 px-4 rounded-xl font-semibold text-[13px] border flex items-center justify-center gap-2 transition-all ${
               isSaved 
-                ? 'bg-red-50 text-red-600 border-red-200 hover:bg-red-100' 
-                : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
+                ? 'bg-brand-cream-light text-brand-green border-brand-green/20 hover:bg-brand-cream' 
+                : 'bg-white text-gray-500 border-[#e6e2d6] hover:bg-brand-cream-light hover:text-brand-green'
             }`}
           >
             {isLoading ? (
               <span className="flex items-center gap-2">⏳ Saving...</span>
             ) : isSaved ? (
-              <span className="flex items-center gap-2">♥ Remove from Wishlist</span>
+              <span className="flex items-center gap-2 text-brand-green"><Heart className="h-4 w-4 fill-brand-green text-brand-green" /> Remove</span>
             ) : (
-              <span className="flex items-center gap-2">♡ Add to Wishlist</span>
+              <span className="flex items-center gap-2"><Heart className="h-4 w-4" /> Add to Wishlist</span>
             )}
           </button>
           
           <button
             onClick={handleAddToCart}
             disabled={isAddingCart || product.stock === 0}
-            className={`w-full py-2 px-4 rounded-xl font-medium text-sm border flex items-center justify-center gap-2 transition-colors ${
-              product.stock === 0 ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed' :
-              inCart ? 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100' : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700'
+            className={`w-full py-2.5 px-4 rounded-xl font-semibold text-[13px] border flex items-center justify-center gap-2 transition-all ${
+              product.stock === 0 ? 'bg-gray-50 text-gray-400 border-[#e6e2d6] cursor-not-allowed' :
+              inCart ? 'bg-brand-cream-light text-brand-green border-brand-green/20 hover:bg-brand-cream' : 'bg-brand-green text-white border-brand-green hover:bg-brand-green-dark shadow-sm'
             }`}
           >
             {isAddingCart ? (
               <span className="flex items-center gap-2">⏳ Adding...</span>
             ) : inCart ? (
-              <span className="flex items-center gap-2"><ShoppingCart className="h-4 w-4" /> Add Another</span>
+              <span className="flex items-center gap-2"><ShoppingCart className="h-4 w-4" /> Added</span>
             ) : (
               <span className="flex items-center gap-2"><ShoppingCart className="h-4 w-4" /> Add to Cart</span>
             )}
           </button>
         </div>
 
-        <div className="mt-auto pt-4 flex items-center justify-between border-t border-gray-50">
-          <div className="flex items-center text-2xl font-bold text-gray-900">
-            <span className="text-sm text-gray-500 font-normal mr-1">₹</span>
+        <div className="mt-auto pt-6 flex items-center justify-between border-t border-[#e6e2d6]/50">
+          <div className="flex items-center text-2xl font-serif font-bold text-brand-green-dark">
+            <span className="text-sm font-sans font-medium text-brand-green/60 mr-1">₹</span>
             {product.price.toLocaleString('en-IN')}
           </div>
           
           <button
             onClick={() => navigate(`/products/${product._id}`)}
-            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors shadow-sm shadow-blue-200"
+            className="px-5 py-2.5 bg-brand-cream text-brand-green text-[13px] font-bold tracking-wide uppercase rounded-xl transition-colors hover:bg-brand-green/10"
           >
-            View Details
+            Details
           </button>
         </div>
       </div>
